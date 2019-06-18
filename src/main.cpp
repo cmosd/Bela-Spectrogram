@@ -20,7 +20,7 @@ int main(int argc, char* argv[]){
 
     // normalising sound to have a specific size
     WavDataNormalisation wdn(c, wav.wavHeader);
-    wdn.normalise(11);
+    wdn.normalise(10);
     wdn.dataMatrix.print();
 
     // computing spectrogam
