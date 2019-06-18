@@ -3,6 +3,44 @@ A C++ Implementation of a spectrogram to run on (but not constrained to) the Bel
 
 
 
+# Install
+
+To `make` the project, clone it
+
+```bash
+git clone git@github.com:alexandrusoloms/Bela-Spectrogram.git
+```
+
+`cd` into it:
+
+```bash
+cd Bela-Spectrogram/
+```
+
+create a directory called build:
+
+```bash
+mkdir build
+```
+
+`cd` into build:
+
+```bash
+cd build/
+```
+
+run `cmake` on the previous directory:
+
+```bash
+cmake ..
+```
+
+run `make` in the current directory (build):
+
+```bash
+make
+```
+
 
 
 # TODO:
