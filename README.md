@@ -41,6 +41,12 @@ run `make` in the current directory (build):
 make
 ```
 
+# Example:
+
+```bash
+./Bela-Spectrogram fileName.wav outputFileName
+```
+
 
 
 # TODO:
