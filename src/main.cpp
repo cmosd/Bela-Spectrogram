@@ -3,6 +3,7 @@
 //
 #include "../inc/ReadWavFile.h"
 #include "../inc/Spectrogram.h"
+#include "../inc/WavDataNormalisation.h"
 
 int main(int argc, char* argv[]){
     if (argc < 3){
@@ -17,8 +18,13 @@ int main(int argc, char* argv[]){
     int sampleRate = wav.wavHeader.SamplesPerSec;
     Matrix c = wav.dataMatrix;
 
+    // normalising sound to have a specific size
+    WavDataNormalisation wdn(c, wav.wavHeader);
+    wdn.normalise(11);
+    wdn.dataMatrix.print();
+
     // computing spectrogam
-    Spectrogram spec(&c, sampleRate);
+    Spectrogram spec(&wdn.dataMatrix, sampleRate);
     spec.saveSpectrogram(saveName);
     return 0;
 }
