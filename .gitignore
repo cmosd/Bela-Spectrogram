@@ -37,3 +37,5 @@ cmake-build-debug/*
 
 # My own
 data/*
+ReadTextFile.h
+ReadTextFile.cpp
