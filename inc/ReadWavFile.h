@@ -5,6 +5,7 @@
 #ifndef BELA_SPECTROGRAM_READWAVFILE_H
 #define BELA_SPECTROGRAM_READWAVFILE_H
 
+#include <stdint.h>
 #include "Matrix.h"
 
 typedef struct  WAV_HEADER

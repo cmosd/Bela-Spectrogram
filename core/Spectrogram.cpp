@@ -72,7 +72,6 @@ Matrix Spectrogram::compute(){
         // FFT
         fft(data);
         for (int k=0; k<(int)floor(NFFT / 2 + 1); k++){
-            // mag_frames->data[l*(mag_frames->cols) + k] = fabs(creal(buff[k]));
              mag_frames.data[l*(mag_frames.cols) + k] = fabs(sqrt(pow(data[k].real(), 2) + pow(data[k].imag(), 2)));
         }
         l++;
