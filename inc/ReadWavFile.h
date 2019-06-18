@@ -34,7 +34,7 @@ typedef struct  WAV_HEADER
 class ReadWavFile{
 public:
     ReadWavFile(char* fileName);
-    ~ReadWavFile() = default;
+    // ~ReadWavFile() = default;
 
     void readHeader();
 

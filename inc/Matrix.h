@@ -18,7 +18,7 @@ TODO: make this take a template <typename T>.
 class Matrix{
 public:
     Matrix(int n_rows, int n_cols);
-    ~Matrix() = default;
+    // ~Matrix() = default;
 
     void print();
 
