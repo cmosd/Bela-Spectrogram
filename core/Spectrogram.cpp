@@ -65,7 +65,12 @@ Matrix Spectrogram::compute(){
         cplx buff[NFFT];
         for (int j=0; j<NFFT; j++){
             // double tmp = frames.data[i*(frames.cols) + j];
-            buff[j] = frames.data[i*(frames.cols) + j];
+            int indexPos = i * (frames.cols) + j;
+            if (indexPos > frames.rows * frames.cols){
+                buff[j] = 0.;
+            }
+            else
+                buff[j] = frames.data[indexPos];
         }
 
         CArray data(buff, NFFT);
@@ -124,6 +129,7 @@ Matrix Spectrogram::compute(){
 
 void Spectrogram::saveSpectrogram(char *path) {
     FILE *filePtr;
+
     filePtr = fopen(path, "w");
     for (int i = 0; i < spectrogram.cols * spectrogram.rows; i++) {
         fprintf(filePtr, "%.10g\n", spectrogram.data[i]);

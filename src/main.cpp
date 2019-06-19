@@ -19,12 +19,12 @@ int main(int argc, char* argv[]){
     Matrix c = wav.dataMatrix;
 
     // normalising sound to have a specific size
-    WavDataNormalisation wdn(c, wav.wavHeader);
-    wdn.normalise(10);
-    wdn.dataMatrix.print();
+     WavDataNormalisation wdn(c, wav.wavHeader);
+     wdn.normalise(10);
+    // wdn.dataMatrix.print();
 
     // computing spectrogam
-    Spectrogram spec(&wdn.dataMatrix, sampleRate);
+    Spectrogram spec(&c, sampleRate);
     spec.saveSpectrogram(saveName);
     return 0;
 }
