@@ -12,8 +12,11 @@ Matrix::Matrix(int r, int c): rows(r), cols(c){
 /* initilising matrix with zeros */
 void Matrix::initMatrix(){
     std::vector<double> d = {0};
-    d.resize(rows*cols);
-    std::fill(d.begin(), d.end(), 0);
+
+    for (int i=0; i<rows * cols; i++){
+        d.push_back(0);
+    }
+
     data = d;
 }
 
@@ -128,4 +131,28 @@ Matrix matrixReplaceZeros(Matrix* m){
         }
     }
     return *m;
+}
+
+/**
+ * FEATURE-02/FIXING NORMALISER
+ */
+
+/**
+ * returns the elements of the matrix up to ``position``
+ * @param m Matrix
+ * @param position
+ * @return
+ */
+Matrix matrixElementsUpto(Matrix* m, int position){
+    Matrix newMatrix(position, m->cols);
+
+    for (int i=0; i<m->rows*m->cols; i++){
+        newMatrix.data[i] = m->data[i];
+        if (i == position){
+            break;
+        } else
+            continue;
+    }
+    int val = newMatrix.data[4201];
+    return newMatrix;
 }

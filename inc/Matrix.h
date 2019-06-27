@@ -41,4 +41,9 @@ Matrix lookupByPosition(Matrix* m, Matrix* position);
 Matrix matrixReplaceZeros(Matrix* m);
 void saveMatrix(Matrix* m);
 
+/**
+ * FEATURE-02/FIXING NORMALISER
+ */
+Matrix matrixElementsUpto(Matrix* m, int position);
+
 #endif //BELA_SPECTROGRAM_MATRIX_H

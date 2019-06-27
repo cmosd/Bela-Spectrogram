@@ -6,6 +6,8 @@
 #include "../inc/Spectrogram.h"
 #include "../inc/WavDataNormalisation.h"
 
+#include "../inc/LogisticRegression.h"
+
 int main(int argc, char* argv[]){
     if (argc < 3){
         std::cout << "You must specify an input and output file." << std::endl;
@@ -20,12 +22,12 @@ int main(int argc, char* argv[]){
     Matrix c = wav.dataMatrix;
 
     // normalising sound to have a specific size
-     WavDataNormalisation wdn(c, wav.wavHeader);
-     wdn.normalise(10);
-    // wdn.dataMatrix.print();
+    WavDataNormalisation wdn(c, wav.wavHeader);
+    wdn.normalise(10);
 
     // computing spectrogam
     Spectrogram spec(&c, sampleRate);
     spec.saveSpectrogram(saveName);
+
     return 0;
 }
