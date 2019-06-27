@@ -6,8 +6,6 @@
 #include "../inc/Spectrogram.h"
 #include "../inc/WavDataNormalisation.h"
 
-#include "../inc/LogisticRegression.h"
-
 int main(int argc, char* argv[]){
     if (argc < 3){
         std::cout << "You must specify an input and output file." << std::endl;
