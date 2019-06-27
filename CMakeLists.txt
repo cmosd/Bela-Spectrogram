@@ -4,4 +4,4 @@ project(Bela-Spectrogram)
 set(CMAKE_CXX_STANDARD 14)
 
 
-add_executable(Bela-Spectrogram src/main.cpp inc/Matrix.h core/Matrix.cpp inc/Spectrogram.h core/Spectrogram.cpp inc/FFT.h core/FFT.cpp inc/ReadWavFile.h core/ReadWavFile.cpp inc/WavDataNormalisation.h core/WavDataNormalisation.cpp inc/LogisticRegression.h core/LogisticRegression.cpp)
+add_executable(Bela-Spectrogram src/main.cpp inc/Matrix.h core/Matrix.cpp inc/Spectrogram.h core/Spectrogram.cpp inc/FFT.h core/FFT.cpp inc/ReadWavFile.h core/ReadWavFile.cpp inc/WavDataNormalisation.h core/WavDataNormalisation.cpp)
