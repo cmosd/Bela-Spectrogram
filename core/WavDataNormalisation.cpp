@@ -13,7 +13,7 @@ WavDataNormalisation::WavDataNormalisation(Matrix data, wav_hdr waveHdr): dataMa
  * @return signal size
  */
 double WavDataNormalisation::getSignalSize() {
-    return dataMatrix.rows / waveHeader.SamplesPerSec;
+    return dataMatrix.rows / (double) waveHeader.SamplesPerSec;
 }
 
 /**
@@ -56,22 +56,23 @@ void WavDataNormalisation::trim(int size) {
  * @param size duration in secs of audio
  */
 void WavDataNormalisation::loop(int size) {
-    int diff = size - (int)(waveHeader.SamplesPerSec * getSignalSize());
-    diff = (int)diff * waveHeader.SamplesPerSec;
 
-    Matrix newMatrix((int)size*waveHeader.SamplesPerSec, 1);
+    int matrixSize = (int) size * waveHeader.SamplesPerSec;
+    Matrix newMatrix(matrixSize, 1);
     int counter = 0;
-    for (int i=0; i<newMatrix.rows; i++){
+    for (int i=0; i<newMatrix.rows * newMatrix.cols; i++){
         if (i < dataMatrix.rows) {
             newMatrix.data[i] = dataMatrix.data[i];
         }
         else {
             newMatrix.data[i] = dataMatrix.data[counter];
             counter++;
+
+            if (counter > dataMatrix.rows){
+                counter = 0;
+            }
         }
     }
-
     // overriding matrix.
     dataMatrix = newMatrix;
-
 }
