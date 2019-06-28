@@ -24,7 +24,7 @@ int main(int argc, char* argv[]){
     wdn.normalise(10);
 
     // computing spectrogam
-    Spectrogram spec(&c, sampleRate);
+    Spectrogram spec(&wdn.dataMatrix, sampleRate);
     spec.saveSpectrogram(saveName);
 
     return 0;
