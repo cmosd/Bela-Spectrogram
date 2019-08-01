@@ -14,7 +14,7 @@
 #define FRAME_SIZE		.025
 #define FRAME_STRIDE	.01
 #define NFFT		    1024
-#define NFILT			40
+#define NFILT			80
 
 typedef std::complex<double> cplx;
 
