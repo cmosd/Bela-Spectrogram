@@ -90,7 +90,7 @@ Matrix Spectrogram::compute(){
 
     double lowFreqMel = 0;
     double highFreqMel = (2595 * log10(1 + ((double)SAMPLE_RATE / 2) / 700));
-    Matrix melPoints = arrange(42, 1, -((highFreqMel - lowFreqMel) / 41), highFreqMel, ((highFreqMel - lowFreqMel) / 41));
+    Matrix melPoints = arrange(NFILT + 2, 1, -((highFreqMel - lowFreqMel) / (NFILT + 1)), highFreqMel, ((highFreqMel - lowFreqMel) / (NFILT + 1)));
 
     Matrix hzPoints = Matrix(melPoints.rows, melPoints.cols);
     for (int i=0; i<melPoints.rows * melPoints.cols; i++){
