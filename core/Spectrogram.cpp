@@ -38,7 +38,7 @@ Matrix Spectrogram::compute(){
     int frameLength = (int)frameLength_;
     int frameStep = (int)frameStep_;
 
-    int numFrames = (int)ceilf((float)(fabs(signalLength - frameLength) / frameStep));
+    int numFrames = (int)ceilf((float)(fabs(signalLength - frameLength) / frameStep) + 2);
     int padSignalLength = numFrames * frameStep + frameLength;
     int arraySize = fabs(padSignalLength - signalLength);
 
