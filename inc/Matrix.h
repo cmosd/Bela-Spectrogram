@@ -5,18 +5,19 @@
 #ifndef BELA_SPECTROGRAM_MATRIX_H
 #define BELA_SPECTROGRAM_MATRIX_H
 
-#include <iostream>
 #include <complex>
+#include <iostream>
 #include <vector>
 
-#define EPS             2.220446049250313e-16
+#define EPS 2.220446049250313e-16
 /*
 This matrix class is for now only able to hold double*...
 TODO: make this take a template <typename T>.
 */
 
-class Matrix{
-public:
+class Matrix
+{
+  public:
     Matrix(int n_rows, int n_cols);
     // ~Matrix() = default;
 
@@ -25,7 +26,7 @@ public:
     int rows, cols;
     std::vector<double> data;
 
- private:
+  private:
     void initMatrix();
 };
 
@@ -46,4 +47,4 @@ void saveMatrix(Matrix* m);
  */
 Matrix matrixElementsUpto(Matrix* m, int position);
 
-#endif //BELA_SPECTROGRAM_MATRIX_H
+#endif  // BELA_SPECTROGRAM_MATRIX_H

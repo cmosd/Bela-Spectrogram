@@ -18,5 +18,4 @@ typedef std::valarray<Complex> CArray;
 // Higher memory requirements and redundancy although more intuitive
 void fft(CArray& x);
 
-
-#endif //BELA_SPECTROGRAM_FFT_H
+#endif  // BELA_SPECTROGRAM_FFT_H

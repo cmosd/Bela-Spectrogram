@@ -5,33 +5,32 @@
 #ifndef BELA_SPECTROGRAM_SPECTROGRAM_H
 #define BELA_SPECTROGRAM_SPECTROGRAM_H
 
-#include <complex.h>
-#include "Matrix.h"
 #include "FFT.h"
+#include "Matrix.h"
+#include <complex.h>
 
-
-#define ALPHA			.97
-#define FRAME_SIZE		.025
-#define FRAME_STRIDE	.01
-#define NFFT		    1024
-#define NFILT			80
+#define ALPHA .97
+#define FRAME_SIZE .025
+#define FRAME_STRIDE .01
+#define NFFT 1024
+#define NFILT 80
 
 typedef std::complex<double> cplx;
 
-class Spectrogram{
-public:
+class Spectrogram
+{
+  public:
     explicit Spectrogram(Matrix* inputMatrix, int sampleRate);
     void saveSpectrogram(char* path);
 
     Matrix inputMatrix;
     Matrix spectrogram;
 
-private:
+  private:
     int SAMPLE_RATE;
     void preEmphasis();
     double hamming(double n, double frameLen);
     Matrix compute();
 };
 
-
-#endif //BELA_SPECTROGRAM_SPECTROGRAM_H
+#endif  // BELA_SPECTROGRAM_SPECTROGRAM_H

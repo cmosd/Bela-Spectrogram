@@ -8,8 +8,9 @@
 #include "Matrix.h"
 #include "ReadWavFile.h"
 
-class WavDataNormalisation{
-public:
+class WavDataNormalisation
+{
+  public:
     WavDataNormalisation(Matrix data, wav_hdr waveHdr);
 
     wav_hdr waveHeader;
@@ -17,11 +18,11 @@ public:
 
     void normalise(int size);
 
-private:
+  private:
     double getSignalSize();
 
     void trim(int size);
     void loop(int size);
 };
 
-#endif //BELA_SPECTROGRAM_WAVDATANORMALISATION_H
+#endif  // BELA_SPECTROGRAM_WAVDATANORMALISATION_H
