@@ -4,8 +4,8 @@
 
 #include "../inc/FFT.h"
 
-
-void fft(CArray& x){
+void fft(CArray& x)
+{
     // DFT
     unsigned int N = x.size(), k = N, n;
     double thetaT = 3.14159265358979323846264338328L / N;

@@ -44,3 +44,4 @@ build/
 
 .ccls-cache/
 .cache/
+Pipfile.lock
