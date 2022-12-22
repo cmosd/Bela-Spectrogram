@@ -7,7 +7,7 @@
 
 #include "FFT.h"
 #include "Matrix.h"
-#include <complex.h>
+#include <complex>
 
 #define ALPHA .97
 #define FRAME_SIZE .025
@@ -15,22 +15,22 @@
 #define NFFT 1024
 #define NFILT 80
 
-typedef std::complex<double> cplx;
+using cplx = std::complex<double>;
 
 class Spectrogram
 {
   public:
     explicit Spectrogram(Matrix* inputMatrix, int sampleRate);
-    void saveSpectrogram(char* path);
+    void SaveSpectrogram(char* path);
 
     Matrix inputMatrix;
     Matrix spectrogram;
 
   private:
-    int SAMPLE_RATE;
-    void preEmphasis();
-    double hamming(double n, double frameLen);
-    Matrix compute();
+    int SAMPLE_RATE_;
+    void PreEmphasis();
+    auto Hamming(double n, double frameLen) -> double;
+    auto Compute() -> Matrix;
 };
 
 #endif  // BELA_SPECTROGRAM_SPECTROGRAM_H

@@ -13,9 +13,9 @@ WavDataNormalisation::WavDataNormalisation(Matrix data, wav_hdr waveHdr)
  * finds the size of the signal.. this is the length of the signal / sample rate
  * @return signal size
  */
-double WavDataNormalisation::getSignalSize()
+auto WavDataNormalisation::GetSignalSize() -> double
 {
-    return dataMatrix.rows / (double)waveHeader.SamplesPerSec;
+    return dataMatrix.rows / static_cast<double>(waveHeader.SamplesPerSec);
 }
 
 /**
@@ -29,13 +29,13 @@ double WavDataNormalisation::getSignalSize()
  */
 void WavDataNormalisation::normalise(int size)
 {
-    double signalSize = getSignalSize();
-    if (signalSize > size)
+    double signal_size = GetSignalSize();
+    if (signal_size > size)
     {
         trim(size);
     }
 
-    else if (signalSize < size)
+    else if (signal_size < size)
     {
         loop(size);
     }
@@ -47,14 +47,14 @@ void WavDataNormalisation::normalise(int size)
  */
 void WavDataNormalisation::trim(int size)
 {
-    int maxIndex = (int)(waveHeader.SamplesPerSec * size);
-    Matrix newMatrix(maxIndex, dataMatrix.cols);
-    for (int i = 0; i < newMatrix.rows * newMatrix.cols; i++)
+    int max_index = static_cast<int>(waveHeader.SamplesPerSec * size);
+    Matrix new_matrix(max_index, dataMatrix.cols);
+    for (int i = 0; i < new_matrix.rows * new_matrix.cols; i++)
     {
-        newMatrix.data[i] = dataMatrix.data[i];
+        new_matrix.data[i] = dataMatrix.data[i];
     }
     // overriding matrix.
-    dataMatrix = newMatrix;
+    dataMatrix = new_matrix;
 }
 
 /**
@@ -63,18 +63,18 @@ void WavDataNormalisation::trim(int size)
  */
 void WavDataNormalisation::loop(int size)
 {
-    int matrixSize = (int)size * waveHeader.SamplesPerSec;
-    Matrix newMatrix(matrixSize, 1);
+    int matrix_size = size * static_cast<int>(waveHeader.SamplesPerSec);
+    Matrix new_matrix(matrix_size, 1);
     int counter = 0;
-    for (int i = 0; i < newMatrix.rows * newMatrix.cols; i++)
+    for (int i = 0; i < new_matrix.rows * new_matrix.cols; i++)
     {
         if (i < dataMatrix.rows)
         {
-            newMatrix.data[i] = dataMatrix.data[i];
+            new_matrix.data[i] = dataMatrix.data[i];
         }
         else
         {
-            newMatrix.data[i] = dataMatrix.data[counter];
+            new_matrix.data[i] = dataMatrix.data[counter];
             counter++;
 
             if (counter > dataMatrix.rows)
@@ -84,5 +84,5 @@ void WavDataNormalisation::loop(int size)
         }
     }
     // overriding matrix.
-    dataMatrix = newMatrix;
+    dataMatrix = new_matrix;
 }

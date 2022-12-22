@@ -6,9 +6,9 @@
 #define BELA_SPECTROGRAM_READWAVFILE_H
 
 #include "Matrix.h"
-#include <stdint.h>
+#include <cstdint>
 
-typedef struct WAV_HEADER
+using wav_hdr = struct WavHeader
 {
     /* RIFF Chunk Descriptor */
     uint8_t RIFF[4];     // RIFF Header Magic header
@@ -29,15 +29,15 @@ typedef struct WAV_HEADER
     /* "data" sub-chunk */
     uint8_t Subchunk2ID[4];  // "data"  string
     uint32_t Subchunk2Size;  // Sampled data length
-} wav_hdr;
+};
 
 class ReadWavFile
 {
   public:
-    ReadWavFile(char* fileName);
+    explicit ReadWavFile(char* fileName);
     // ~ReadWavFile() = default;
 
-    void readHeader();
+    void ReadHeader();
 
     char* fileName;
     FILE* wavFile;

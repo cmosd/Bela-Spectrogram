@@ -4,10 +4,10 @@
 
 #include "../inc/FFT.h"
 
-void fft(CArray& x)
+void fft(CArray& input)
 {
     // DFT
-    unsigned int N = x.size(), k = N, n;
+    unsigned int N = input.size(), k = N, n;
     double thetaT = 3.14159265358979323846264338328L / N;
     Complex phiT = Complex(cos(thetaT), -sin(thetaT)), T;
     while (k > 1)
@@ -21,9 +21,9 @@ void fft(CArray& x)
             for (unsigned int a = l; a < N; a += n)
             {
                 unsigned int b = a + k;
-                Complex t = x[a] - x[b];
-                x[a] += x[b];
-                x[b] = t * T;
+                Complex t = input[a] - input[b];
+                input[a] += input[b];
+                input[b] = t * T;
             }
             T *= phiT;
         }
@@ -41,9 +41,9 @@ void fft(CArray& x)
         b = ((b >> 16) | (b << 16)) >> (32 - m);
         if (b > a)
         {
-            Complex t = x[a];
-            x[a] = x[b];
-            x[b] = t;
+            Complex t = input[a];
+            input[a] = input[b];
+            input[b] = t;
         }
     }
 }
