@@ -39,3 +39,8 @@ cmake-build-debug/*
 data/*
 ReadTextFile.h
 ReadTextFile.cpp
+
+build/
+
+.ccls-cache/
+.cache/
