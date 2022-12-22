@@ -41,3 +41,6 @@ ReadTextFile.h
 ReadTextFile.cpp
 
 build/
+
+.ccls-cache/
+.cache/
