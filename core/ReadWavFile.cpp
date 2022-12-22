@@ -7,19 +7,20 @@ ReadWavFile::ReadWavFile(char* fileName)
   : dataMatrix(1, 1)
   , fileName(fileName)
 {
-    FILE* wavFile = fopen(fileName, "r");
+    FILE* wav_file = fopen(fileName, "r");
     // Read the header
-    int headerSize = sizeof(wav_hdr), filelength = 0;
-    size_t bytesRead = fread(&wavHeader, 1, headerSize, wavFile);
+    int header_size = sizeof(wav_hdr);
+    int filelength = 0;
+    size_t bytes_read = fread(&wavHeader, 1, header_size, wav_file);
 
-    Matrix m((int)wavHeader.Subchunk2Size / 2, 1);
+    Matrix matrix(static_cast<int>(wavHeader.Subchunk2Size) / 2, 1);
 
-    for (int i = 0; i < (int)wavHeader.Subchunk2Size / 2; i++)
+    for (int i = 0; i < static_cast<int>(wavHeader.Subchunk2Size) / 2; i++)
     {
         auto* data = new short[1];
-        bytesRead = fread(data, sizeof(short), 1, wavFile);
-        m.data[i] = *data;
+        bytes_read = fread(data, sizeof(short), 1, wav_file);
+        matrix.data[i] = *data;
     }
 
-    dataMatrix = m;
+    dataMatrix = matrix;
 }

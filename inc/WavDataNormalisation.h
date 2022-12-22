@@ -19,7 +19,7 @@ class WavDataNormalisation
     void normalise(int size);
 
   private:
-    double getSignalSize();
+    auto GetSignalSize() -> double;
 
     void trim(int size);
     void loop(int size);

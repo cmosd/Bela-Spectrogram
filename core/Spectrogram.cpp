@@ -5,23 +5,23 @@
 
 Spectrogram::Spectrogram(Matrix* m, int sampleRate)
   : inputMatrix(*m)
-  , SAMPLE_RATE(sampleRate)
+  , SAMPLE_RATE_(sampleRate)
   , spectrogram(1, 1)
 {
-    preEmphasis();
-    spectrogram = compute();
+    PreEmphasis();
+    spectrogram = Compute();
 }
 
-void Spectrogram::preEmphasis()
+void Spectrogram::PreEmphasis()
 {
-    Matrix matrixDuplicate = duplicateMatrix(&inputMatrix);
+    Matrix matrix_duplicate = duplicateMatrix(&inputMatrix);
 
     for (int i = 0; i < inputMatrix.rows * inputMatrix.cols; i++)
     {
         if (i != 0)
         {
-            double previousElement = matrixDuplicate.data[i - 1];
-            inputMatrix.data[i] -= ALPHA * previousElement;
+            double previous_element = matrix_duplicate.data[i - 1];
+            inputMatrix.data[i] -= ALPHA * previous_element;
         }
     }
 }
@@ -32,39 +32,37 @@ void Spectrogram::preEmphasis()
  * @param frameLen
  * @return
  */
-double Spectrogram::hamming(double n, double frameLen)
+auto Spectrogram::Hamming(double n, double frameLen) -> double
 {
     return 0.54 - 0.46 * cos((2 * M_PI * n) / (frameLen - 1));
 }
 
-Matrix Spectrogram::compute()
+auto Spectrogram::Compute() -> Matrix
 {
-    double frameLength_ = FRAME_SIZE * SAMPLE_RATE;
-    double frameStep_ = FRAME_STRIDE * SAMPLE_RATE;
-    int signalLength = inputMatrix.rows;
-    int frameLength = (int)frameLength_;
-    int frameStep = (int)frameStep_;
+    int frame_length = FRAME_SIZE * SAMPLE_RATE_;
+    int frame_step = FRAME_STRIDE * SAMPLE_RATE_;
+    int signal_length = inputMatrix.rows;
 
-    int numFrames =
-        (int)ceilf((float)(fabs(signalLength - frameLength) / frameStep) + 2);
-    int padSignalLength = numFrames * frameStep + frameLength;
-    int arraySize = fabs(padSignalLength - signalLength);
+    int num_frames =
+        static_cast<int>(ceilf((float)(fabs(signal_length - frame_length) / frame_step) + 2));
+    int pad_signal_length = num_frames * frame_step + frame_length;
+    int array_size = std::abs(pad_signal_length - signal_length);
 
-    Matrix z(arraySize, 1);
-    Matrix padSignal = append1DMatrices(&inputMatrix, &z);
-    Matrix tiles = arrange(numFrames, frameLength, -1, frameLength - 1, 1);
-    Matrix tiles2 = arrange(frameLength, numFrames, -frameStep, (numFrames - 1) * frameStep, frameStep);
+    Matrix z(array_size, 1);
+    Matrix pad_signal = append1DMatrices(&inputMatrix, &z);
+    Matrix tiles = arrange(num_frames, -1, frame_length, frame_length - 1, 1);
+    Matrix tiles2 = arrange(frame_length, num_frames, -frame_step, (num_frames - 1) * frame_step, frame_step);
     tiles2 = matrixTranspose(&tiles2);
 
     Matrix indices = matrixAddition(&tiles, &tiles2);
-    Matrix frames = lookupByPosition(&padSignal, &indices);
+    Matrix frames = lookupByPosition(&pad_signal, &indices);
 
     // applying hamming
     for (int i = 0; i < frames.rows; i++)
     {
         for (int j = 0; j < frames.cols; j++)
         {
-            frames.data[i * frames.cols + j] *= hamming(j, frameLength);
+            frames.data[i * frames.cols + j] *= Hamming(j, frame_length);
         }
     }
 
@@ -77,19 +75,20 @@ Matrix Spectrogram::compute()
         for (int j = 0; j < NFFT; j++)
         {
             // double tmp = frames.data[i*(frames.cols) + j];
-            int indexPos = i * (frames.cols) + j;
-            if (indexPos > frames.rows * frames.cols)
+            int index_pos = i * (frames.cols) + j;
+            if (index_pos > frames.rows * frames.cols)
             {
                 buff[j] = 0.;
             }
-            else
-                buff[j] = frames.data[indexPos];
+            else {
+                buff[j] = frames.data[index_pos];
+}
         }
 
         CArray data(buff, NFFT);
         // FFT
         fft(data);
-        for (int k = 0; k < (int)floor(NFFT / 2 + 1); k++)
+        for (int k = 0; k < static_cast<int>(floor(NFFT / 2 + 1)); k++)
         {
             mag_frames.data[l * (mag_frames.cols) + k] =
                 fabs(sqrt(pow(data[k].real(), 2) + pow(data[k].imag(), 2)));
@@ -104,61 +103,61 @@ Matrix Spectrogram::compute()
         pow_frames.data[i] = ((1.0 / NFFT) * ((pow(mag_frames.data[i], 2))));
     }
 
-    double lowFreqMel = 0;
-    double highFreqMel = (2595 * log10(1 + ((double)SAMPLE_RATE / 2) / 700));
-    Matrix melPoints =
-        arrange(NFILT + 2, 1, -((highFreqMel - lowFreqMel) / (NFILT + 1)), highFreqMel, ((highFreqMel - lowFreqMel) / (NFILT + 1)));
+    double low_freq_mel = 0;
+    double high_freq_mel = (2595 * log10(1 + (static_cast<double>(SAMPLE_RATE_) / 2) / 700));
+    Matrix mel_points =
+        arrange(NFILT + 2, 1, -((high_freq_mel - low_freq_mel) / (NFILT + 1)), high_freq_mel, ((high_freq_mel - low_freq_mel) / (NFILT + 1)));
 
-    Matrix hzPoints = Matrix(melPoints.rows, melPoints.cols);
-    for (int i = 0; i < melPoints.rows * melPoints.cols; i++)
+    Matrix hz_points = Matrix(mel_points.rows, mel_points.cols);
+    for (int i = 0; i < mel_points.rows * mel_points.cols; i++)
     {
-        hzPoints.data[i] = (700 * (pow(10, (melPoints.data[i] / 2595)) - 1));
+        hz_points.data[i] = (700 * (pow(10, (mel_points.data[i] / 2595)) - 1));
     }
 
-    Matrix bin = Matrix(hzPoints.rows, hzPoints.cols);
+    Matrix bin = Matrix(hz_points.rows, hz_points.cols);
     for (int i = 0; i < bin.rows * bin.cols; i++)
     {
-        bin.data[i] = floor((NFFT + 1) * hzPoints.data[i] / SAMPLE_RATE);
+        bin.data[i] = floor((NFFT + 1) * hz_points.data[i] / SAMPLE_RATE_);
     }
 
-    Matrix fBank = Matrix(NFILT, (int)floor(NFFT / 2 + 1));
+    Matrix f_bank = Matrix(NFILT, static_cast<int>(floor(NFFT / 2 + 1)));
     for (int m = 1; m < NFILT + 1; m++)
     {
-        int f_m_minus = (int)bin.data[m - 1];  // left
-        int f_m = (int)bin.data[m];            // center
-        int f_m_plus = (int)bin.data[m + 1];   // right
+        int f_m_minus = static_cast<int>(bin.data[m - 1]);  // left
+        int f_m = static_cast<int>(bin.data[m]);            // center
+        int f_m_plus = static_cast<int>(bin.data[m + 1]);   // right
 
         for (int j = f_m_minus; j < f_m; j++)
         {
-            fBank.data[(m - 1) * (fBank.cols) + j] =
+            f_bank.data[(m - 1) * (f_bank.cols) + j] =
                 (j - bin.data[m - 1]) / (bin.data[m] - bin.data[m - 1]);
         }
 
         for (int j = f_m; j < f_m_plus; j++)
         {
-            fBank.data[(m - 1) * (fBank.cols) + j] =
+            f_bank.data[(m - 1) * (f_bank.cols) + j] =
                 (bin.data[m + 1] - j) / (bin.data[m + 1] - bin.data[m]);
         }
     }
 
-    fBank = matrixTranspose(&fBank);
-    Matrix filterBanks = matrixDotProduct(&pow_frames, &fBank);
-    filterBanks = matrixReplaceZeros(&filterBanks);  // stability
-    for (int i = 0; i < filterBanks.cols * filterBanks.rows; i++)
+    f_bank = matrixTranspose(&f_bank);
+    Matrix filter_banks = matrixDotProduct(&pow_frames, &f_bank);
+    filter_banks = matrixReplaceZeros(&filter_banks);  // stability
+    for (int i = 0; i < filter_banks.cols * filter_banks.rows; i++)
     {
-        filterBanks.data[i] = 20. * log10(filterBanks.data[i]);
+        filter_banks.data[i] = 20. * log10(filter_banks.data[i]);
     }
 
-    return filterBanks;
+    return filter_banks;
 }
 
-void Spectrogram::saveSpectrogram(char* path)
+void Spectrogram::SaveSpectrogram(char* path)
 {
-    FILE* filePtr;
+    FILE* file_ptr;
 
-    filePtr = fopen(path, "w");
+    file_ptr = fopen(path, "w");
     for (int i = 0; i < spectrogram.cols * spectrogram.rows; i++)
     {
-        fprintf(filePtr, "%.10g\n", spectrogram.data[i]);
+        fprintf(file_ptr, "%.10g\n", spectrogram.data[i]);
     }
 }

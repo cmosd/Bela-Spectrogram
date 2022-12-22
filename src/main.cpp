@@ -6,7 +6,7 @@
 #include "../inc/Spectrogram.h"
 #include "../inc/WavDataNormalisation.h"
 
-int main(int argc, char* argv[])
+auto main(int argc, char* argv[]) -> int
 {
     if (argc < 3)
     {
@@ -14,20 +14,20 @@ int main(int argc, char* argv[])
         return -1;
     }
     char* fname(argv[1]);
-    char* saveName(argv[2]);
+    char* save_name(argv[2]);
 
     // reading wav file
     ReadWavFile wav(fname);
-    int sampleRate = wav.wavHeader.SamplesPerSec;
-    Matrix c = wav.dataMatrix;
+    int sample_rate = static_cast<int>(wav.wavHeader.SamplesPerSec);
+    Matrix input_matrix = wav.dataMatrix;
 
     // normalising sound to have a specific size
-    WavDataNormalisation wdn(c, wav.wavHeader);
+    WavDataNormalisation wdn(input_matrix, wav.wavHeader);
     wdn.normalise(10);
 
     // computing spectrogam
-    Spectrogram spec(&wdn.dataMatrix, sampleRate);
-    spec.saveSpectrogram(saveName);
+    Spectrogram spec(&wdn.dataMatrix, sample_rate);
+    spec.SaveSpectrogram(save_name);
 
     return 0;
 }
