@@ -21,7 +21,8 @@ class Spectrogram
 {
   public:
     explicit Spectrogram(Matrix* inputMatrix, int sampleRate);
-    void saveSpectrogram(char* path);
+    void SaveSpectrogram(char* path);
+    void ToPNG(char* path);
 
     Matrix inputMatrix;
     Matrix spectrogram;
@@ -32,5 +33,10 @@ class Spectrogram
     double hamming(double n, double frameLen);
     Matrix compute();
 };
+
+
+auto NormaliseTo255(double value,  double max_value,  double min_value) -> std::size_t;
+auto Min(std::vector<double> &vec) -> double;
+auto Max(std::vector<double> &vec) -> double;
 
 #endif  // BELA_SPECTROGRAM_SPECTROGRAM_H

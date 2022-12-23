@@ -26,8 +26,9 @@ int main(int argc, char* argv[])
     wdn.normalise(10);
 
     // computing spectrogam
-    Spectrogram spec(&wdn.dataMatrix, sampleRate);
-    spec.saveSpectrogram(saveName);
+    Spectrogram spec(&wdn.dataMatrix, sample_rate);
+    //spec.SaveSpectrogram(save_name);
+    spec.ToPNG(save_name);
 
     return 0;
 }

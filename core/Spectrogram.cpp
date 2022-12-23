@@ -2,6 +2,7 @@
 // Created by mariussolomes on 16/06/19.
 //
 #include "../inc/Spectrogram.h"
+#include <png++/png.hpp>
 
 Spectrogram::Spectrogram(Matrix* m, int sampleRate)
   : inputMatrix(*m)
@@ -162,3 +163,59 @@ void Spectrogram::saveSpectrogram(char* path)
         fprintf(filePtr, "%.10g\n", spectrogram.data[i]);
     }
 }
+
+auto NormaliseTo255(double value, const double max_value, const double min_value) -> size_t {
+    auto result = static_cast<size_t>((max_value - value) / (value - min_value));
+    return result * 255;
+        
+}
+
+auto Min(std::vector<double> &vec) -> double {
+    double min_value = 9999999999999;
+    
+    for (auto &val: vec) {
+        if (val < min_value) {
+            min_value = val;
+        }
+    }
+
+    return min_value;
+
+}
+
+auto Max(std::vector<double> &vec) -> double {
+    double max_value = -9999999999999;
+    
+    for (auto &val: vec) {
+        if (val > max_value) {
+            max_value = val;
+        }
+    }
+
+    return max_value;
+
+}
+
+void Spectrogram::ToPNG(char* path) {
+
+    double max = Max(spectrogram.data);
+    double min = Min(spectrogram.data);
+
+    png::image< png::rgb_pixel > image(spectrogram.rows, spectrogram.cols);
+     for (size_t y = 0; y < image.get_height(); ++y)
+     {
+         for (size_t x = 0; x < image.get_width(); ++x)
+         {
+             
+             size_t pixel_value = NormaliseTo255(spectrogram.data[x+y], max, min);
+             std::cout << pixel_value << ' ' << spectrogram.data[x+y] << std::endl;
+             image[y][x] = png::rgb_pixel(pixel_value, pixel_value, pixel_value);
+             //image[y][x] = png::gray_pixel_16(spectrogram.data[x + y]);
+             //image[y][x] = png::gray_pixel(NormaliseTo255(spectrogram.data[x+y], max, min));
+             // non-checking equivalent of image.set_pixel(x, y, ...);
+         }
+     }
+     image.write(path);
+}
+
+
