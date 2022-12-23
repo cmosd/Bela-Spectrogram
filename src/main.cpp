@@ -28,6 +28,9 @@ auto main(int argc, char* argv[]) -> int
     // computing spectrogam
     Spectrogram spec(&wdn.dataMatrix, sample_rate);
     spec.SaveSpectrogram(save_name);
+    
+    std::string name(save_name);
+    spec.ToPNG(name);
 
     return 0;
 }

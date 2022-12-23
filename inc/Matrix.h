@@ -9,7 +9,7 @@
 #include <iostream>
 #include <vector>
 
-#define EPS 2.220446049250313e-16
+#define MYEPS 2.220446049250313e-16
 /*
 This matrix class is for now only able to hold double*...
 TODO: make this take a template <typename T>.

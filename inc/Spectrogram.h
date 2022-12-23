@@ -8,6 +8,8 @@
 #include "FFT.h"
 #include "Matrix.h"
 #include <complex>
+#include <opencv2/opencv.hpp>
+#include <opencv2/highgui.hpp>
 
 #define ALPHA .97
 #define FRAME_SIZE .025
@@ -22,6 +24,7 @@ class Spectrogram
   public:
     explicit Spectrogram(Matrix* inputMatrix, int sampleRate);
     void SaveSpectrogram(char* path);
+    void ToPNG(std::string path);
 
     Matrix inputMatrix;
     Matrix spectrogram;

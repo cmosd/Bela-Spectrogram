@@ -156,7 +156,7 @@ Matrix matrixReplaceZeros(Matrix* m)
     {
         if (m->data[i] == 0)
         {
-            m->data[i] = EPS;
+            m->data[i] = MYEPS;
         }
     }
     return *m;

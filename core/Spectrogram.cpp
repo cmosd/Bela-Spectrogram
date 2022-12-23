@@ -2,6 +2,11 @@
 // Created by mariussolomes on 16/06/19.
 //
 #include "../inc/Spectrogram.h"
+#include <opencv2/opencv.hpp>
+#include <opencv2/highgui.hpp>
+
+using cv::imwrite;
+using cv::Mat;
 
 Spectrogram::Spectrogram(Matrix* m, int sampleRate)
   : inputMatrix(*m)
@@ -160,4 +165,13 @@ void Spectrogram::SaveSpectrogram(char* path)
     {
         fprintf(file_ptr, "%.10g\n", spectrogram.data[i]);
     }
+}
+
+void Spectrogram::ToPNG(std::string path) {
+    FILE* file_ptr;
+
+    double* aaa = (spectrogram.data).data();
+
+    Mat image = Mat(spectrogram.cols, spectrogram.cols, CV_8UC4, reinterpret_cast<unsigned*>(aaa));
+    imwrite(path, image);
 }
