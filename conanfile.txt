@@ -1,4 +1,5 @@
 [requires]
+opencv/4.5.5
 gtest/1.8.1
 
 [generators]
