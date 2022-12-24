@@ -1,4 +1,5 @@
 [requires]
+pngpp/0.2.10
 gtest/1.8.1
 
 [generators]
