@@ -21,7 +21,7 @@ class Spectrogram
 {
   public:
     explicit Spectrogram(Matrix* inputMatrix, int sampleRate);
-    void SaveSpectrogram(char* path);
+    void saveSpectrogram(char* path);
     void ToPNG(char* path);
 
     Matrix inputMatrix;

@@ -1,0 +1,38 @@
+{
+  "configurations": {
+    "cpp-vscode-cpptools": {
+      "adapter": "vscode-cpptools",
+      "configuration": {
+        "name": "Cpp: Launch current file",
+        "type": "cppdbg",
+        "request": "launch",
+        "externalConsole": true,
+        "logging": {
+          "engineLogging": true
+        },
+        "stopOnEntry": false,
+        "stopAtEntry": false,
+        "debugOptions": [],
+        "MIMode": "gdb",
+        "cwd": "${cwd}",
+        "program": "${workspaceRoot}/build/bin/${name}"
+      }
+    },
+    "cpp-codelldb": {
+      "adapter": "CodeLLDB",
+      "configuration": {
+        "type": "lldb",
+        "request": "launch",
+        "cwd": "${workspaceRoot}",
+        "program": "${workspaceRoot}/build/bin/${name}",
+        "args": [
+          "*${Args}"
+        ],
+        "source_languages": [
+          "rust",
+          "cpp"
+        ]
+      }
+    }
+  }
+}

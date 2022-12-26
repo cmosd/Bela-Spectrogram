@@ -165,8 +165,8 @@ void Spectrogram::saveSpectrogram(char* path)
 }
 
 auto NormaliseTo255(double value, const double max_value, const double min_value) -> size_t {
-    auto result = static_cast<size_t>((max_value - value) / (value - min_value));
-    return result * 255;
+    auto result = (value - min_value) / (max_value - min_value);
+    return (size_t)(result * 255);
         
 }
 
@@ -201,20 +201,32 @@ void Spectrogram::ToPNG(char* path) {
     double max = Max(spectrogram.data);
     double min = Min(spectrogram.data);
 
+    std::cout << max << ' ' << min << std::endl;
+    
+
     png::image< png::rgb_pixel > image(spectrogram.rows, spectrogram.cols);
-     for (size_t y = 0; y < image.get_height(); ++y)
-     {
-         for (size_t x = 0; x < image.get_width(); ++x)
-         {
-             
-             size_t pixel_value = NormaliseTo255(spectrogram.data[x+y], max, min);
-             std::cout << pixel_value << ' ' << spectrogram.data[x+y] << std::endl;
-             image[y][x] = png::rgb_pixel(pixel_value, pixel_value, pixel_value);
-             //image[y][x] = png::gray_pixel_16(spectrogram.data[x + y]);
-             //image[y][x] = png::gray_pixel(NormaliseTo255(spectrogram.data[x+y], max, min));
-             // non-checking equivalent of image.set_pixel(x, y, ...);
+    
+    int row_counter = 0;
+    int col_counter = 0;
+    for (int i = 0; i < spectrogram.rows * spectrogram.cols; i++) {
+         std::cout << row_counter << ' ' << col_counter << ' ' << spectrogram.cols << ' ' << spectrogram.rows << std::endl;
+         size_t C = NormaliseTo255(spectrogram.data[i], max, min);
+
+         size_t B = C % 256;
+         size_t G = ((C - B) / 256) % 256;
+         size_t R = (C - B / 256 * 256) - (G / 256);
+         //size_t pixel_value = (size_t)spectrogram.data[i];
+         // set
+         image[col_counter][row_counter] = png::rgb_pixel(R, G, B);
+         
+         if (row_counter == spectrogram.rows) {
+             row_counter = 0;
+             col_counter += 1;
          }
-     }
+         row_counter += 1;
+        
+        
+    }
      image.write(path);
 }
 
