@@ -5,6 +5,7 @@
 #include "../inc/ReadWavFile.h"
 #include "../inc/Spectrogram.h"
 #include "../inc/WavDataNormalisation.h"
+#include "../inc/pgm.h"
 
 int main(int argc, char* argv[])
 {
@@ -29,5 +30,10 @@ int main(int argc, char* argv[])
     Spectrogram spec(&wdn.dataMatrix, sampleRate);
     spec.saveSpectrogram(saveName);
 
+
+    PGMSpecification pgm = MakePGM("P5", "", 191, spec.spectrogram);
+
+    const char* name = "a.pgm";
+    pgm.ToPGM(name);
     return 0;
 }
